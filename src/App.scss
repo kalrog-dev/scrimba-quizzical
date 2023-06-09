@@ -1,3 +1,7 @@
+/* ==============
+Fonts
+===============*/
+
 @font-face {
   font-family: 'Inter';
   font-weight: 400;
@@ -28,6 +32,9 @@
   src: url('./assets/fonts/karla-bold.woff2') format('woff2');
 }
 
+/* ==============
+Variables
+===============*/
 // Colors
 $clr-primary-600: hsl(231, 42%, 28%);   // text
 $clr-primary-400: hsl(230, 34%, 46%);   // btn-bg & option border
@@ -45,15 +52,97 @@ $fs-p: 1rem;
 $fs-result: 0.8125rem;
 $fs-small: 0.625rem;
 
-// Karla 700, 
-// Inter 700, 600, 500, 400
+// Layout
+$wrapper-width: 72.7%;
+$wrapper-margin: calc((100% - $wrapper-width) / 2);
 
-body {
-  font-family: $ff-paragraph;
+/* ==============
+Reset
+===============*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
+/* ==============
+General styles
+===============*/
+body {
+  font-family: $ff-paragraph;
+  font-size: $fs-p;
+  font-weight: 400;
+  color: $clr-primary-600;
+  line-height: 1.21;
+}
+
+.wrapper {
+  width: 72.7%;
+  margin-inline: auto;
+  padding-top: 2.5em;
+}
+
+/* ==============
+Typography
+===============*/
 h1 {
   font-family: $ff-heading;
   font-size: $fs-1;
+  font-weight: 700;
+  line-height: 1.17;
+}
 
+.question__title {
+  font-family: $ff-heading;
+  font-size: $fs-p;
+  font-weight: 700;
+  line-height: 1.17;
+}
+
+.question__option {
+  font-size: $fs-small;
+  font-weight: 500;
+  line-height: 1.17;
+}
+
+/* ==============
+Layout
+===============*/
+.question {
+  border-bottom: 1px solid $clr-neutral-300;
+  padding-bottom: 0.75em;
+  margin-bottom: 0.75em;
+}
+
+.question__title {
+  margin-bottom: 0.75em;
+}
+
+.question__option-container {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 0.75em;
+}
+
+.question__option {
+  padding: 0.5em 1.5em;
+  color: $clr-primary-600;
+  border: 1px solid $clr-primary-400;
+  border-radius: 10px;
+}
+
+/* ==============
+Media queries
+===============*/
+@media (min-width: 992px) {
+  :root {
+    font-size: 22px;
+  }
+
+  body {
+    max-width: 1200px;
+    margin-inline: auto;
+  }
 }
