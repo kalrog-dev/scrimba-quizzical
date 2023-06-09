@@ -21,8 +21,7 @@ export default function App() {
     // Decode question and answers
     const question = decode(item.question)
     const correct = decode(item.correct_answer)
-    const incorrectArr = item.incorrect_answers
-    incorrectArr.map(e => decode(e))
+    const incorrectArr = item.incorrect_answers.map(e => decode(e))
 
     // Create question components
     return (
