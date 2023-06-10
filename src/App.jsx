@@ -10,7 +10,7 @@ export default function App() {
   const [quizData, setQuizData] = useState([])
 
   useEffect(() => {
-    fetch('https://opentdb.com/api.php?amount=7&category=18&difficulty=easy&type=multiple')
+    fetch('https://opentdb.com/api.php?amount=6 &category=18&difficulty=easy&type=multiple')
       .then(res => res.json())
       .then(data => setQuizData(data.results))
       .catch(err => alert(err))

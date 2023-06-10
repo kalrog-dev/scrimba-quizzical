@@ -128,9 +128,20 @@ Layout
 
 .question__option {
   padding: 0.5em 1.5em;
+  font-family: inherit;
   color: $clr-primary-600;
+  background-color: $clr-neutral-200;
   border: 1px solid $clr-primary-400;
   border-radius: 10px;
+  cursor: pointer;
+  transition-property: background-color, border-color;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in;
+}
+
+.question__option--selected {
+  background-color: $clr-neutral-400;
+  border-color: $clr-neutral-400;
 }
 
 /* ==============
