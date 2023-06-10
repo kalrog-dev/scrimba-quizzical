@@ -78,15 +78,22 @@ export default function App() {
         e.classList.add('question__option--success')
         correctArr.shift()
       } else {
-        // Wrong answer
+        // Not correct answer (both selected or not selected)
         e.classList.add('question__option--light')
-
-        // Wrong selection
-        console.log(e)
-        // if (e.classList.includes('question__option--selected')) {
-        //   e.classList.add('question__option--error')
-        // }
       }
+    })
+
+    // Show wrong selections
+    const answerContainers = document.querySelectorAll('.question__option-container')
+    answerContainers.forEach(e => {
+      // Iterate through 6 question containers
+      e.childNodes.forEach((e, index) => {
+        // Iterate through 4 answers
+        if (index === userAnswersArr[index] && !e.classList.contains('question__option--success')) {
+          // Answers user chose and are not correct
+          e.classList.add('question__option--error')
+        }
+      })
     })
   }, [showAnswers])
 
@@ -129,7 +136,7 @@ export default function App() {
     return tempAnswers
   }
   
-  // Update the state with user's selection
+  // Update the state with user's selection of answers
   function updateAnswers() {
     const newArray = getUserAnswers()
     setUserAnswersArr(newArray)
