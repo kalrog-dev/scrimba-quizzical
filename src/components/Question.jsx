@@ -2,10 +2,9 @@ import { useState, useEffect } from 'react'
 import { nanoid } from 'nanoid'
 
 export default function Question(props) {
-  const [selectedAnswer, setSelectedAnswer] = useState(false)
-
+  // Create four answers
   const allAnswers = props.answers.map((answer) => {
-      return <button className="question__option" key={nanoid()} onClick={toggleSelect}>{answer}</button>
+    return <button className="question__option" key={nanoid()} onClick={toggleSelect}>{answer}</button>
   })
 
   // Select an answer
@@ -24,7 +23,7 @@ export default function Question(props) {
 
     if (selectedIndex) {
       // If some answer was clicked && something has the selected class (user didn't just deselect) -> remove all selections, then select the target (to make sure only 1 answer is selected)
-      answers.forEach((answer, index) => answer.classList.remove('question__option--selected'))
+      answers.forEach((answer) => answer.classList.remove('question__option--selected'))
       event.target.classList.add('question__option--selected')
     }
   }

@@ -40,7 +40,7 @@ $clr-primary-600: hsl(231, 42%, 28%);   // text
 $clr-primary-400: hsl(230, 34%, 46%);   // btn-bg & option border
 $clr-neutral-400: hsl(230, 61%, 90%);   // selected option (no border)
 $clr-neutral-300: hsl(231, 41%, 90%);   // <hr>
-$clr-neutral-200: hsl(220, 43%, 97%);   // bg
+$clr-neutral-200: hsl(223, 47%, 97%);   // bg
 $clr-accent-success: #94D7A2;
 $clr-accent-error: #F8BCBC;
 
@@ -82,6 +82,16 @@ body {
   width: 72.7%;
   margin-inline: auto;
   padding-top: 2.5em;
+}
+
+.btn {
+  padding: 1em 2.1em;
+  font-family: inherit;
+  color: $clr-neutral-200;
+  background-color: $clr-primary-400;
+  border: 1px solid $clr-neutral-400;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 /* ==============
@@ -142,6 +152,16 @@ Layout
 .question__option--selected {
   background-color: $clr-neutral-400;
   border-color: $clr-neutral-400;
+}
+
+.question__option--success {
+  background-color: $clr-accent-success;
+  border-color: $clr-accent-success;
+}
+
+.question__option--error {
+  background-color: $clr-accent-error;
+  border-color: $clr-accent-error;
 }
 
 /* ==============
