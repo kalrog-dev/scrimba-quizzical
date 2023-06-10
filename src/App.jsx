@@ -6,33 +6,43 @@ import Question from './components/Question'
 import './App.scss'
 
 export default function App() {
-  const [quizStarted, setQuizStarted] = useState(false)
+  const [quizStarted, setQuizStarted] = useState(true)
   const [quizData, setQuizData] = useState([])
   const [showAnswers, setShowAnswers] = useState(false)
 
   useEffect(() => {
     fetch('https://opentdb.com/api.php?amount=6 &category=18&difficulty=easy&type=multiple')
       .then(res => res.json())
-      .then(data => setQuizData(data.results))
+      .then(data => {
+        let tempData = data.results.map((item) => {
+          // Decode question and answers, then shuffle answers
+          const question = decode(item.question)
+          const correct = decode(item.correct_answer)
+          const incorrectArr = item.incorrect_answers.map(e => decode(e))
+          const answersArr = [...incorrectArr, correct]
+          shuffleArray(answersArr)
+
+          return {
+            ...item,
+            question: question,
+            correct_answer: correct,
+            incorrect_answers: incorrectArr,
+            answersArr: answersArr
+          }
+        })
+        setQuizData(tempData)
+      })
       .catch(err => alert(err))
   }, [])
 
-  // Generate question components
+  // Generate question components when the Quiz is started
   const allQuestions = quizData.map((item) => {
-    // Decode question and answers
-    const question = decode(item.question)
-    const correct = decode(item.correct_answer)
-    const incorrectArr = item.incorrect_answers.map(e => decode(e))
-    const answersArr = [...incorrectArr, correct]
-    shuffleArray(answersArr)
-
-    // Create question components
     return (
       <Question 
         key={nanoid()}
-        question={question}
-        answers={answersArr}
-        correct={correct}
+        question={item.question}
+        answers={item.answersArr}
+        correct={item.correct_answer}
       />
     )
   })
@@ -49,7 +59,6 @@ export default function App() {
 
   function score() {
     setShowAnswers(prevShowAnswers => !prevShowAnswers)
-    console.log(showAnswers)
   }
 
   useEffect(() => {
@@ -70,7 +79,6 @@ export default function App() {
         correctArr.shift()
       }
     })
-
   }, [showAnswers])
 
   return (
