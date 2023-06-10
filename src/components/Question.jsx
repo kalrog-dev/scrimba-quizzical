@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react'
 import { nanoid } from 'nanoid'
+import Answer from './Answer'
 
 export default function Question(props) {
+  const [userAnswers, setUserAnswers] = useState([])
+  let tempAnswers = [];
+
   // Create four answers
   const allAnswers = props.answers.map((answer) => {
-    return <button className="question__option" key={nanoid()} onClick={toggleSelect}>{answer}</button>
+    return <Answer key={nanoid()} toggleSelect={toggleSelect} value={answer} />
   })
 
   // Select an answer

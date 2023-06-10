@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { nanoid } from 'nanoid'
-import {decode} from 'html-entities';
+import {decode} from 'html-entities'
 import Intro from './components/Intro'
 import Question from './components/Question'
 import './App.scss'
@@ -9,11 +9,14 @@ export default function App() {
   const [quizStarted, setQuizStarted] = useState(true)
   const [quizData, setQuizData] = useState([])
   const [showAnswers, setShowAnswers] = useState(false)
+  const [userAnswersArr, setUserAnswersArr] = useState([])
+
+  console.log(userAnswersArr)
 
   useEffect(() => {
-    fetch('https://opentdb.com/api.php?amount=6 &category=18&difficulty=easy&type=multiple')
+    fetch('https://opentdb.com/api.php?amount=6&category=18&difficulty=easy&type=multiple')
       .then(res => res.json())
-      .then(data => {
+      .then(data => { console.log('api call')
         let tempData = data.results.map((item) => {
           // Decode question and answers, then shuffle answers
           const question = decode(item.question)
@@ -57,10 +60,6 @@ export default function App() {
     }
   }
 
-  function score() {
-    setShowAnswers(prevShowAnswers => !prevShowAnswers)
-  }
-
   useEffect(() => {
     const answers = document.querySelectorAll('.question__option')
     let correctArr = [];
@@ -75,18 +74,74 @@ export default function App() {
     // Show correct answers
     answers.forEach(e => {
       if (correctArr.includes(e.textContent)) {
+        // Correct answer
         e.classList.add('question__option--success')
         correctArr.shift()
+      } else {
+        // Wrong answer
+        e.classList.add('question__option--light')
+
+        // Wrong selection
+        console.log(e)
+        // if (e.classList.includes('question__option--selected')) {
+        //   e.classList.add('question__option--error')
+        // }
       }
     })
   }, [showAnswers])
+
+  // Add selected class to answers based on userAnswersArr
+  const questions = document.querySelectorAll('.question__option-container')
+  questions.forEach((e, index) => {
+    const questionIndex = index;
+    // Iterate through 6 questions
+    e.childNodes.forEach((e, index) => {
+      // Iterate through 4 answers
+      if (userAnswersArr[questionIndex] === index) {
+        e.classList.add('question__option--selected')
+      }
+    })
+  })
+
+  // Get the answers selected by user
+  function getUserAnswers() {
+    // Search all questions for the answers with the selected class
+    const questions = document.querySelectorAll('.question__option-container')
+    let tempAnswers = [];
+
+    questions.forEach((e, index) => {
+      // Iterate through 6 questions  //props.updateAnswers(arr)
+      const questionIndex = index
+      let answerIndex = -1
+      
+      // Try to find user's selection in this block, else default to -1
+      e.childNodes.forEach((e, index) => {
+        // Iterate through 4 answers
+        if (e.classList.contains('question__option--selected')) {
+          answerIndex = index
+        }
+      })
+
+      // Update the result
+      tempAnswers.push(answerIndex)
+    })
+
+    return tempAnswers
+  }
+  
+  // Update the state with user's selection
+  function updateAnswers() {
+    const newArray = getUserAnswers()
+    setUserAnswersArr(newArray)
+    setShowAnswers(prevShowAnswers => !prevShowAnswers)
+  }
 
   return (
     <div className="wrapper">
       {/* <Intro /> */}
       <div className="quiz">
         {allQuestions}
-        <button className="btn" onClick={score}>Check answers</button>
+        <button className="btn" onClick={() => updateAnswers()}>Check answers</button>
       </div>
     </div>
   )
