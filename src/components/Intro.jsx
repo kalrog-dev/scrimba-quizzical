@@ -1,9 +1,11 @@
-export default function Intro() {
+export default function Intro(props) {
   return (
-    <div className="intro">
-      <h1 class="intro__title">Quizzical</h1>
-      <p class="intro__description">Quiz app built in React</p>
-      <button class="intro__btn">Start quiz</button>
+    <div className="intro-container">
+      <div className="intro">
+        <h1 className="intro__title">Quizzical</h1>
+        <p className="intro__description">Computer science quiz app</p>
+        <button className="intro__btn btn" onClick={props.startQuiz}>Start quiz</button>
+      </div>
     </div>
   )
 }

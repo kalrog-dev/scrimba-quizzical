@@ -6,16 +6,19 @@ import Question from './components/Question'
 import './App.scss'
 
 export default function App() {
-  const [quizStarted, setQuizStarted] = useState(true)
+  const [quizStarted, setQuizStarted] = useState(false)
   const [quizData, setQuizData] = useState([])
   const [showAnswers, setShowAnswers] = useState(false)
   const [userAnswersArr, setUserAnswersArr] = useState([])
   const [correctAnswersArr, setCorrectAnswersArr] = useState([])
 
+  const totalQuestions = 6
+  const url = `https://opentdb.com/api.php?amount=${totalQuestions}&category=18&difficulty=easy&type=multiple`
+
   useEffect(() => {
-    fetch('https://opentdb.com/api.php?amount=20&category=18&difficulty=easy&type=multiple')
+    fetch(url)
       .then(res => res.json())
-      .then(data => { console.log('api call')
+      .then(data => {
         let tempCorrectAnswersArr = []
         let tempData = data.results.map((item) => {
           // Decode question and answers, then shuffle answers
@@ -71,23 +74,24 @@ export default function App() {
       e.childNodes.forEach((e, index) => {
         // Iterate through answers
         if (userAnswersArr[containerIndex] === -1) {
-          // If there is selected answer for this question
+          // If there is no selected answer for this question
           if (e.textContent === correctAnswersArr[containerIndex]) {
-            e.classList.add('question__option--success')
+            e.classList.add('question__option--selected')
+          } else {
+            e.classList.add('question__option--light')
           }
-          e.classList.add('question__option--light')
         }
         else if (e.textContent === correctAnswersArr[containerIndex]) {
-          // Correct answers
+          // Correct answers which user may or may not have selected
           e.classList.add('question__option--success')
         }
         else if (index === userAnswersArr[containerIndex]) {
-          // Answers user chose and are not correct
+          // Answers user selected and are not correct
           e.classList.add('question__option--error')
           e.classList.add('question__option--light')
         }
         else {
-          // Incorrect but not selected answers
+          // Incorrect answers, but not selected either
           e.classList.add('question__option--light')
         }
       })
@@ -140,13 +144,44 @@ export default function App() {
     setShowAnswers(prevShowAnswers => !prevShowAnswers)
   }
 
+  function getTotalCorrect() {
+    let totalCorrectCount = 0;
+    const answerContainers = document.querySelectorAll('.question__option-container')
+    answerContainers.forEach((e, containerIndex) => {
+      // Iterate through question containers
+      e.childNodes.forEach((e, index) => {
+        // Iterate through answers
+        if (e.textContent === correctAnswersArr[containerIndex] 
+          && index === userAnswersArr[containerIndex]) {
+          // Correct answers which user selected
+          totalCorrectCount++
+        }
+      })
+    })
+    return totalCorrectCount
+  }
+
+  const button = showAnswers ? 
+    <a className="btn" href="index.html">Play again</a> :
+    <button className="btn" onClick={() => updateAnswers()}>Check answers</button>
+
+  const quiz = (
+    <div className="quiz">
+      {allQuestions}
+      <section className="evaluation">
+        {showAnswers && <p className="evaluation__score">You scored {getTotalCorrect()}/{totalQuestions} correct answers</p>}
+        {button}
+      </section>
+    </div>
+  )
+
+  function startQuiz() {
+    setQuizStarted(prevQuizStarted => !prevQuizStarted)
+  }
+
   return (
     <div className="wrapper">
-      {/* <Intro /> */}
-      <div className="quiz">
-        {allQuestions}
-        <button className="btn" onClick={() => updateAnswers()}>Check answers</button>
-      </div>
+      {quizStarted ? quiz : <Intro startQuiz={startQuiz}/>}
     </div>
   )
 }
