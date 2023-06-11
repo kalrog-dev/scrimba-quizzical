@@ -10,13 +10,13 @@ export default function App() {
   const [quizData, setQuizData] = useState([])
   const [showAnswers, setShowAnswers] = useState(false)
   const [userAnswersArr, setUserAnswersArr] = useState([])
-
-  console.log(userAnswersArr)
+  const [correctAnswersArr, setCorrectAnswersArr] = useState([])
 
   useEffect(() => {
-    fetch('https://opentdb.com/api.php?amount=6&category=18&difficulty=easy&type=multiple')
+    fetch('https://opentdb.com/api.php?amount=20&category=18&difficulty=easy&type=multiple')
       .then(res => res.json())
       .then(data => { console.log('api call')
+        let tempCorrectAnswersArr = []
         let tempData = data.results.map((item) => {
           // Decode question and answers, then shuffle answers
           const question = decode(item.question)
@@ -24,6 +24,8 @@ export default function App() {
           const incorrectArr = item.incorrect_answers.map(e => decode(e))
           const answersArr = [...incorrectArr, correct]
           shuffleArray(answersArr)
+
+          tempCorrectAnswersArr.push(correct)
 
           return {
             ...item,
@@ -33,6 +35,7 @@ export default function App() {
             answersArr: answersArr
           }
         })
+        setCorrectAnswersArr(tempCorrectAnswersArr)
         setQuizData(tempData)
       })
       .catch(err => alert(err))
@@ -60,38 +63,32 @@ export default function App() {
     }
   }
 
+  // Evaluate user's answers
   useEffect(() => {
-    const answers = document.querySelectorAll('.question__option')
-    let correctArr = [];
-    
-    // Create an array of correct answers
-    if (showAnswers) {
-      allQuestions.forEach(e => {
-        correctArr.push(e.props.correct)
-      })
-    }
-
-    // Show correct answers
-    answers.forEach(e => {
-      if (correctArr.includes(e.textContent)) {
-        // Correct answer
-        e.classList.add('question__option--success')
-        correctArr.shift()
-      } else {
-        // Not correct answer (both selected or not selected)
-        e.classList.add('question__option--light')
-      }
-    })
-
-    // Show wrong selections
     const answerContainers = document.querySelectorAll('.question__option-container')
-    answerContainers.forEach(e => {
-      // Iterate through 6 question containers
+    answerContainers.forEach((e, containerIndex) => {
+      // Iterate through question containers
       e.childNodes.forEach((e, index) => {
-        // Iterate through 4 answers
-        if (index === userAnswersArr[index] && !e.classList.contains('question__option--success')) {
+        // Iterate through answers
+        if (userAnswersArr[containerIndex] === -1) {
+          // If there is selected answer for this question
+          if (e.textContent === correctAnswersArr[containerIndex]) {
+            e.classList.add('question__option--success')
+          }
+          e.classList.add('question__option--light')
+        }
+        else if (e.textContent === correctAnswersArr[containerIndex]) {
+          // Correct answers
+          e.classList.add('question__option--success')
+        }
+        else if (index === userAnswersArr[containerIndex]) {
           // Answers user chose and are not correct
           e.classList.add('question__option--error')
+          e.classList.add('question__option--light')
+        }
+        else {
+          // Incorrect but not selected answers
+          e.classList.add('question__option--light')
         }
       })
     })
