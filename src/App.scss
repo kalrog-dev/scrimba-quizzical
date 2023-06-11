@@ -92,7 +92,12 @@ body {
   background-color: $clr-primary-400;
   border: 1px solid $clr-primary-400;
   border-radius: 10px;
+  transition: opacity 0.1s ease-in;
   cursor: pointer;
+
+  &:hover {
+    opacity: 0.9;
+  }
 }
 
 /* ==============
@@ -245,12 +250,17 @@ Layout
     &--light {
       opacity: 0.5;
     }
+
+    &--disabled {
+      pointer-events: none;
+    }
   }
 }
 
 // Quiz evaluation
 .evaluation {
   display: flex;
+  flex-flow: row wrap;
   justify-content: center;
   align-items: center;
   gap: 1em;
@@ -316,5 +326,26 @@ Media queries
   .intro::before,
   .intro::after {
     transform: scale(2.5);
+  }
+
+  .quiz {
+    &::before {
+      content: url('./assets/blob-1.svg');
+      position: fixed;
+      top: 0;
+      right: 0;
+      transform: scale(1.25);
+      transform-origin: top right;
+    }
+  
+    &::after {
+      content: url('./assets/blob-2.svg');
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      height: 118px;
+      transform: scale(1.25);
+      transform-origin: bottom left;
+    }
   }
 }

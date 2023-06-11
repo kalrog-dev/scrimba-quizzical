@@ -72,6 +72,9 @@ export default function App() {
     answerContainers.forEach((e, containerIndex) => {
       // Iterate through question containers
       e.childNodes.forEach((e, index) => {
+        // Disable pointer events for all answers
+        e.classList.add('question__option--disabled')
+
         // Iterate through answers
         if (userAnswersArr[containerIndex] === -1) {
           // If there is no selected answer for this question
