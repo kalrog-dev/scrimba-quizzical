@@ -180,8 +180,8 @@ export default function App() {
   }
 
   return (
-    <div className="wrapper">
+    <>
       {quizStarted ? quiz : <Intro startQuiz={startQuiz}/>}
-    </div>
+    </>
   )
 }

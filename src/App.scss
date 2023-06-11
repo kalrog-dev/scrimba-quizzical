@@ -70,8 +70,9 @@ Reset
 /* ==============
 General styles
 ===============*/
+
 body {
-  max-width: 1200px;
+  position: relative;
   margin-inline: auto;
   font-family: $ff-paragraph;
   font-size: $fs-p;
@@ -80,8 +81,9 @@ body {
   line-height: 1.21;
 }
 
-.wrapper {
-  width: 90%;
+#root {
+  max-width: 1200px;
+  min-height: 100vh;
   margin-inline: auto;
 }
 
@@ -156,24 +158,44 @@ Layout
 
 .intro {
   text-align: center;
-  width: max-content;
-}
 
-.intro__title {
-  margin-bottom: 0.35em;
-}
+  &::before {
+    content: url('./assets/blob-1.svg');
+    position: fixed;
+    top: 0;
+    right: 0;
+    transform: scale(0.75);
+    transform-origin: top right;
+  }
 
-.intro__description {
-  margin-bottom: 1.8em;
-}
+  &::after {
+    content: url('./assets/blob-2.svg');
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 118px;
+    transform: scale(0.75);
+    transform-origin: bottom left;
+  }
 
-.intro__btn {
-  padding-inline: 3.5em;
-  border-radius: 15px;
+  &__title {
+    margin-bottom: 0.35em;
+  }
+  
+  &__description {
+    margin-bottom: 1.8em;
+  }
+  
+  &__btn {
+    padding-inline: 3.5em;
+    border-radius: 15px;
+  }
 }
 
 // Quiz
 .quiz {
+  width: 90%;
+  margin-inline: auto;
   padding-top: 1.35em;
 }
 
@@ -181,49 +203,49 @@ Layout
   border-bottom: 1px solid $clr-neutral-300;
   padding-bottom: 0.9375em;
   margin-bottom: 0.9375em;
-}
 
-.question__title {
-  margin-bottom: 0.675em;
-}
+  &__title {
+    margin-bottom: 0.675em;
+  }
+  
+  &__option-container {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 0.7em;
+  }
+  
+  &__option {
+    padding: 0.38em 0.8em;
+    min-width: 60px;
+    font-family: inherit;
+    color: $clr-primary-600;
+    background-color: $clr-neutral-200;
+    border: 1px solid $clr-primary-400;
+    border-radius: 10px;
+    cursor: pointer;
+    transition-property: background-color, border-color;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in;
 
-.question__option-container {
-  display: flex;
-  flex-flow: row wrap;
-  gap: 0.7em;
-}
-
-.question__option {
-  padding: 0.38em 0.8em;
-  min-width: 60px;
-  font-family: inherit;
-  color: $clr-primary-600;
-  background-color: $clr-neutral-200;
-  border: 1px solid $clr-primary-400;
-  border-radius: 10px;
-  cursor: pointer;
-  transition-property: background-color, border-color;
-  transition-duration: 0.1s;
-  transition-timing-function: ease-in;
-}
-
-.question__option--selected {
-  background-color: $clr-neutral-400;
-  border-color: $clr-neutral-400;
-}
-
-.question__option--success {
-  background-color: $clr-accent-success;
-  border-color: $clr-accent-success;
-}
-
-.question__option--error {
-  background-color: $clr-accent-error;
-  border-color: $clr-accent-error;
-}
-
-.question__option--light {
-  opacity: 0.5;
+    &--selected {
+      background-color: $clr-neutral-400;
+      border-color: $clr-neutral-400;
+    }
+    
+    &--success {
+      background-color: $clr-accent-success;
+      border-color: $clr-accent-success;
+    }
+    
+    &--error {
+      background-color: $clr-accent-error;
+      border-color: $clr-accent-error;
+    }
+    
+    &--light {
+      opacity: 0.5;
+    }
+  }
 }
 
 // Quiz evaluation
@@ -232,7 +254,7 @@ Layout
   justify-content: center;
   align-items: center;
   gap: 1em;
-  margin-block: 1.25em;
+  padding-block: 1.25em;
 }
 
 /* ==============
@@ -243,12 +265,13 @@ Media queries
     font-size: 18px;
   }
 
-  .wrapper {
-    width: 85%;
+  .intro::before,
+  .intro::after {
+    transform: scale(1);
   }
-
+  
   .quiz {
-    padding-top: 2.25em;
+    width: 85%;
   }
 }
 
@@ -257,7 +280,12 @@ Media queries
     font-size: 20px;
   }
 
-  .wrapper {
+  .intro::before,
+  .intro::after {
+    transform: scale(1.25);
+  }
+
+  .quiz {
     width: 80%;
   }
 }
@@ -267,7 +295,26 @@ Media queries
     font-size: 22px;
   }
 
-  .wrapper {
+  .intro::before,
+  .intro::after {
+    transform: scale(1.5);
+  }
+
+  .quiz {
     width: 72.7%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .intro::before,
+  .intro::after {
+    transform: scale(2);
+  }
+}
+
+@media (min-width: 1400px) {
+  .intro::before,
+  .intro::after {
+    transform: scale(2.5);
   }
 }
