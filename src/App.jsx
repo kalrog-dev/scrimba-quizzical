@@ -45,8 +45,6 @@ export default function App() {
       .catch(err => alert(err))
   }, [])
 
-  console.log(correctAnswersArr, selectedAnswers)
-
   // Generate question components when the Quiz is started
   const allQuestions = quizData.map((item, index) => {
     return (
@@ -107,20 +105,9 @@ export default function App() {
   }
 
   function getTotalCorrect() {
-    let totalCorrectCount = 0;
-    const answerContainers = document.querySelectorAll('.question__option-container')
-    answerContainers.forEach((e, containerIndex) => {
-      // Iterate through question containers
-      e.childNodes.forEach((e, index) => {
-        // Iterate through answers
-        if (e.textContent === correctAnswersArr[containerIndex] 
-          && index === userAnswersArr[containerIndex]) {
-          // Correct answers which user selected
-          totalCorrectCount++
-        }
-      })
-    })
-    return totalCorrectCount
+    // Compare correct answers with the selected answers and return the total of correct answers
+    const correctAnswers = quizData.map(item => item.correct_answer)
+    return correctAnswers.reduce((total, answer, index) => answer === selectedAnswers[index] ? total + 1 : total, 0)
   }
 
   const button = showAnswers ? 
