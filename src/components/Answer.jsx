@@ -44,8 +44,8 @@ export default function Answer(props) {
     }
   }, [props.showAnswers])
 
-  function getClasses() {
-    // Add or remove selected class on which answer user has clicked
+  // Add or remove '--selected' modifier class from the answer user has clicked
+  function toggleSelect() {
     return props.selectedAnswer === props.value
         ? 'question__option question__option--selected'
         : 'question__option'
@@ -71,12 +71,7 @@ export default function Answer(props) {
   }
 
   return (
-    <button
-      className={
-        props.showAnswers ? answerClasses : getClasses()
-      }
-      onClick={handleAnswerClick}
-    >
+    <button className={props.showAnswers ? answerClasses : toggleSelect()} onClick={handleAnswerClick}>
       {props.value}
     </button>
   )

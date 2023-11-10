@@ -20,11 +20,11 @@ export default function Question(props) {
   )
 
   return (
-      <section className="question">
-        <p className="question__title">{props.question}</p>
-        <div className="question__option-container">
-          {allAnswers}
-        </div>
-      </section>
+    <section className="question">
+      <p className="question__title">{props.question}</p>
+      <div className="question__option-container">
+        {allAnswers}
+      </div>
+    </section>
   )
 }
