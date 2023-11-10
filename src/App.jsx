@@ -9,8 +9,6 @@ export default function App() {
   const [quizStarted, setQuizStarted] = useState(false)
   const [quizData, setQuizData] = useState([])
   const [showAnswers, setShowAnswers] = useState(false)
-  const [userAnswersArr, setUserAnswersArr] = useState([])
-  const [correctAnswersArr, setCorrectAnswersArr] = useState([])
   const [selectedAnswers, setSelectedAnswers] = useState([null, null, null, null, null, null])
 
   const totalQuestions = 6
@@ -20,7 +18,6 @@ export default function App() {
     fetch(url)
       .then(res => res.json())
       .then(data => {
-        let tempCorrectAnswersArr = []
         let tempData = data.results.map((item) => {
           // Decode question and answers, then shuffle answers
           const question = decode(item.question)
@@ -28,8 +25,6 @@ export default function App() {
           const incorrectArr = item.incorrect_answers.map(e => decode(e))
           const answersArr = [...incorrectArr, correct]
           shuffleArray(answersArr)
-
-          tempCorrectAnswersArr.push(correct)
 
           return {
             ...item,
@@ -39,7 +34,6 @@ export default function App() {
             answersArr: answersArr
           }
         })
-        setCorrectAnswersArr(tempCorrectAnswersArr)
         setQuizData(tempData)
       })
       .catch(err => alert(err))
@@ -63,44 +57,16 @@ export default function App() {
 
   // Randomize array in-place using Durstenfeld shuffle algorithm
   function shuffleArray(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        let temp = array[i]
+        array[i] = array[j]
+        array[j] = temp
     }
   }
-
-  // Get the answers selected by user
-  function getUserAnswers() {
-    // Search all questions for the answers with the selected class
-    const questions = document.querySelectorAll('.question__option-container')
-    let tempAnswers = [];
-
-    questions.forEach((e, index) => {
-      // Iterate through 6 questions  //props.updateAnswers(arr)
-      const questionIndex = index
-      let answerIndex = -1
-      
-      // Try to find user's selection in this block, else default to -1
-      e.childNodes.forEach((e, index) => {
-        // Iterate through 4 answers
-        if (e.classList.contains('question__option--selected')) {
-          answerIndex = index
-        }
-      })
-
-      // Update the result
-      tempAnswers.push(answerIndex)
-    })
-
-    return tempAnswers
-  }
   
-  // Update the state with user's selection of answers
+  // Shows correct answers by applying modifier classes to each answer in Answer.jsx
   function updateAnswers() {
-    const newArray = getUserAnswers()
-    setUserAnswersArr(newArray)
     setShowAnswers(prevShowAnswers => !prevShowAnswers)
   }
 
