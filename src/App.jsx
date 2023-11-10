@@ -45,6 +45,8 @@ export default function App() {
       .catch(err => alert(err))
   }, [])
 
+  console.log(correctAnswersArr, selectedAnswers)
+
   // Generate question components when the Quiz is started
   const allQuestions = quizData.map((item, index) => {
     return (
@@ -70,19 +72,6 @@ export default function App() {
         array[j] = temp;
     }
   }
-
-  // Add selected class to answers based on userAnswersArr
-  const questions = document.querySelectorAll('.question__option-container')
-  questions.forEach((e, index) => {
-    const questionIndex = index;
-    // Iterate through 6 questions
-    e.childNodes.forEach((e, index) => {
-      // Iterate through 4 answers
-      if (userAnswersArr[questionIndex] === index) {
-        e.classList.add('question__option--selected')
-      }
-    })
-  })
 
   // Get the answers selected by user
   function getUserAnswers() {
