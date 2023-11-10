@@ -1,31 +1,25 @@
-import { useState } from 'react'
-
 export default function Answer(props) {
-  const [answerClasses, setAnswerClasses] = useState(['question__option'])
-
-  const handleAnswerClick = event => {
-    setAnswerClasses(prevAnswerClasses => {
-      console.log(prevAnswerClasses)
-      // First letting user select / deselect what they want
-      if (prevAnswerClasses.includes('question__option--selected')) {
-        // Add selected modifier class
-        prevAnswerClasses.push('question__option--selected')
-      } else {
-        // Remove selected modifier class
-        const index = prevAnswerClasses.indexOf('question__option--selected')
-        prevAnswerClasses.splice(index, 1)
-      }
-
-      // Check which answer has the selected class
-
-    })
+  // Update the selectedAnswer state to then add/remove 'question__option--selected' class
+  const handleAnswerClick = () => {
+    if (props.selectedAnswer === props.value) {
+      // If the selected answer has been clicked, deselect it
+      props.setSelectedAnswer(null)
+    } else {
+      // If new answer has been clicked, select it
+      props.setSelectedAnswer(props.value)
+    }
   }
 
-  console.log(answerClasses);
-
   return (
-    <button className={answerClasses.join(" ")} onClick={handleAnswerClick}>
+    <button
+      className={
+        props.selectedAnswer === props.value
+          ? "question__option question__option--selected"
+          : "question__option"
+      }
+      onClick={handleAnswerClick}
+    >
       {props.value}
     </button>
-  );
+  )
 }
