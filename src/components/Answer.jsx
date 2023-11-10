@@ -2,28 +2,22 @@ import { useState, useEffect } from "react";
 
 export default function Answer(props) {
   // A concatenated string of all modifier classes for an answer after the quiz evaluation
-  const [answerClasses, setAnswerClasses] = useState('question__option')
+  const [modifierClassNames, setModifierClassNames] = useState('question__option')
   
   // Evaluate user's answers
   useEffect(() => {
-    // Run if the quiz should be evaluated
     if (props.showAnswers) {
-      // Create a temporary object to update mofifier classes with at the end
+      // Create a temporary binding to set mofifier classes with in the end
       let tempClasses = 'question__option'
 
       // Disable pointer events for all answers
       tempClasses += ' question__option--disabled'
 
-      // If there is no selected answer for this question  
+      // If there is no selected answer, select the correct one and make incorrect ones light
       if (props.selectedAnswer === null) {
-        // Highlight the correct answer with just the "selected" class
-        if (props.correctAnswer === props.value) {
-          tempClasses += ' question__option--selected'
-        } 
-        // Make the incorrect answers light
-        else {
-          tempClasses += ' question__option--light'
-        }
+        tempClasses += (props.correctAnswer === props.value) 
+          ? ' question__option--selected' 
+          : ' question__option--light'
       }
       // Correct answers whether has the user selected them or not
       else if (props.correctAnswer === props.value) {
@@ -31,8 +25,7 @@ export default function Answer(props) {
       }
       // Answers user selected and are not correct
       else if (props.selectedAnswer === props.value && props.selectedAnswer !== props.correctAnswer) {
-        tempClasses += ' question__option--error'
-        tempClasses += ' question__option--light'
+        tempClasses += ' question__option--error question__option--light'
       }
       // Incorrect answers, but not selected either
       else {
@@ -40,12 +33,12 @@ export default function Answer(props) {
       }
 
       // Update modifier classes all at once
-      setAnswerClasses(tempClasses)
+      setModifierClassNames(tempClasses)
     }
   }, [props.showAnswers])
 
-  // Add or remove '--selected' modifier class from the answer user has clicked
-  function toggleSelect() {
+  // Before quiz evaluation, add or remove '--selected' modifier class from the answer user has clicked
+  function getClassNames() {
     return props.selectedAnswer === props.value
         ? 'question__option question__option--selected'
         : 'question__option'
@@ -71,7 +64,7 @@ export default function Answer(props) {
   }
 
   return (
-    <button className={props.showAnswers ? answerClasses : toggleSelect()} onClick={handleAnswerClick}>
+    <button className={props.showAnswers ? modifierClassNames : getClassNames()} onClick={handleAnswerClick}>
       {props.value}
     </button>
   )
