@@ -11,6 +11,7 @@ export default function App() {
   const [showAnswers, setShowAnswers] = useState(false)
   const [userAnswersArr, setUserAnswersArr] = useState([])
   const [correctAnswersArr, setCorrectAnswersArr] = useState([])
+  const [selectedAnswers, setSelectedAnswers] = useState([null, null, null, null, null, null])
 
   const totalQuestions = 6
   const url = `https://opentdb.com/api.php?amount=${totalQuestions}&category=18&difficulty=easy&type=multiple`
@@ -45,13 +46,17 @@ export default function App() {
   }, [])
 
   // Generate question components when the Quiz is started
-  const allQuestions = quizData.map((item) => {
+  const allQuestions = quizData.map((item, index) => {
     return (
       <Question 
         key={nanoid()}
         question={item.question}
         answers={item.answersArr}
         correct={item.correct_answer}
+        showAnswers={showAnswers}
+        selectedAnswers={selectedAnswers}
+        setSelectedAnswers={setSelectedAnswers}
+        questionIndex={index}
       />
     )
   })
@@ -65,41 +70,6 @@ export default function App() {
         array[j] = temp;
     }
   }
-
-  // Evaluate user's answers
-  useEffect(() => {
-    const answerContainers = document.querySelectorAll('.question__option-container')
-    answerContainers.forEach((e, containerIndex) => {
-      // Iterate through question containers
-      e.childNodes.forEach((e, index) => {
-        // Disable pointer events for all answers
-        e.classList.add('question__option--disabled')
-
-        // Iterate through answers
-        if (userAnswersArr[containerIndex] === -1) {
-          // If there is no selected answer for this question
-          if (e.textContent === correctAnswersArr[containerIndex]) {
-            e.classList.add('question__option--selected')
-          } else {
-            e.classList.add('question__option--light')
-          }
-        }
-        else if (e.textContent === correctAnswersArr[containerIndex]) {
-          // Correct answers which user may or may not have selected
-          e.classList.add('question__option--success')
-        }
-        else if (index === userAnswersArr[containerIndex]) {
-          // Answers user selected and are not correct
-          e.classList.add('question__option--error')
-          e.classList.add('question__option--light')
-        }
-        else {
-          // Incorrect answers, but not selected either
-          e.classList.add('question__option--light')
-        }
-      })
-    })
-  }, [showAnswers])
 
   // Add selected class to answers based on userAnswersArr
   const questions = document.querySelectorAll('.question__option-container')
