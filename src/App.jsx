@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { nanoid } from 'nanoid'
-import {decode} from 'html-entities'
+import { decode } from 'html-entities'
 import Intro from './components/Intro'
 import Question from './components/Question'
 import './App.scss'
@@ -58,20 +58,20 @@ export default function App() {
   // Randomize array in-place using Durstenfeld shuffle algorithm
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        let temp = array[i]
-        array[i] = array[j]
-        array[j] = temp
+      let j = Math.floor(Math.random() * (i + 1))
+      let temp = array[i]
+      array[i] = array[j]
+      array[j] = temp
     }
   }
   
-  // Shows correct answers by applying modifier classes to each answer in Answer.jsx
+  // Show correct answers by applying modifier classes to each answer in Answer.jsx
   function updateAnswers() {
     setShowAnswers(prevShowAnswers => !prevShowAnswers)
   }
 
+  // Compare correct answers with the selected answers and return the total of correct answers
   function getTotalCorrect() {
-    // Compare correct answers with the selected answers and return the total of correct answers
     const correctAnswers = quizData.map(item => item.correct_answer)
     return correctAnswers.reduce((total, answer, index) => answer === selectedAnswers[index] ? total + 1 : total, 0)
   }
@@ -96,7 +96,7 @@ export default function App() {
 
   return (
     <>
-      {quizStarted ? quiz : <Intro startQuiz={startQuiz}/>}
+      {quizStarted ? quiz : <Intro startQuiz={startQuiz} />}
     </>
   )
 }
