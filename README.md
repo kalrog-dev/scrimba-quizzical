@@ -1,6 +1,4 @@
 # Scrimba, Learn React - Quizzical Solo Project
-Update - Nov 10, 2023: This project has been created 5 months ago. I am revisiting it to fix and refactor some parts.
-
-This is my solution to the Quizzical solo project that is part of the [Learn React](https://scrimba.com/learn/learnreact) course at Scrimba.
+Quizzical is a 100% solo project that is an optional challenge at the end of the [Learn React](https://scrimba.com/learn/learnreact) course at Scrimba.
 
 Live URL: https://quizzical-solution.netlify.app/
