@@ -2,10 +2,10 @@ import { nanoid } from 'nanoid'
 import Answer from './Answer'
 
 export default function Question(props) {
-  // Store which one of the 4 corresponding answers has been selected (null / value)
+  // Store which one of the four corresponding answers has been selected (null / value)
   const selectedAnswer = props.selectedAnswers[props.questionIndex]
 
-  // Create four answers
+  // Create four answers associated with this question
   const allAnswers = props.answers.map((answer) => 
     <Answer 
       key={nanoid()} 

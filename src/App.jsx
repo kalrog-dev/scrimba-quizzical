@@ -11,7 +11,7 @@ export default function App() {
   const [showAnswers, setShowAnswers] = useState(false)
   const [selectedAnswers, setSelectedAnswers] = useState([null, null, null, null, null, null])
 
-  const totalQuestions = 6
+  const totalQuestions = selectedAnswers.length
   const url = `https://opentdb.com/api.php?amount=${totalQuestions}&category=18&difficulty=easy&type=multiple`
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function App() {
       .then(res => res.json())
       .then(data => {
         let tempData = data.results.map((item) => {
-          // Decode question and answers, then shuffle answers
+          // Decode each question and answers, then shuffle the answers array
           const question = decode(item.question)
           const correct = decode(item.correct_answer)
           const incorrectArr = item.incorrect_answers.map(e => decode(e))
@@ -70,7 +70,7 @@ export default function App() {
     setShowAnswers(prevShowAnswers => !prevShowAnswers)
   }
 
-  // Compare correct answers with the selected answers and return the total of correct answers
+  // Compare correct answers with the selected answers and return the total of correct answers selected
   function getTotalCorrect() {
     const correctAnswers = quizData.map(item => item.correct_answer)
     return correctAnswers.reduce((total, answer, index) => answer === selectedAnswers[index] ? total + 1 : total, 0)
