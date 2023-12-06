@@ -1,5 +1,5 @@
 # Scrimba, Learn React - Quizzical Solo Project
-Quizzical is a computer science quiz made with React and SASS. It is a 100% solo project that is an optional challenge at the end of the [Learn React](https://scrimba.com/learn/learnreact) course at Scrimba. Some of the main project features are listed below.
+Quizzical is a computer science quiz made with React and SASS. It is a solo project that is an optional challenge at the end of the [Learn React](https://scrimba.com/learn/learnreact) course at Scrimba. Some of the main project features are listed below.
 
 | Features        | Description                                                                |
 | :-------------- | :------------------------------------------------------------------------- |
